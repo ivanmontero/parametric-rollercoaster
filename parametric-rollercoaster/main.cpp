@@ -45,6 +45,7 @@ void Main::Run() {
 }
 
 void Main::Exit() {
+	World::GetInstance()->Release();
 	Window::Dispose();
 }
 

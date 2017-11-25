@@ -20,9 +20,10 @@ const char const Expr::NUMBERS[11] = { '0','1','2','3','4','5','6','7','8','9', 
 /******************************** OBJECT METHODS ********************************/
 
 std::shared_ptr<Symbolic> Expr::parse(std::string expr) {
-	std::cout << "Original   : " << expr << std::endl;
 	return std::make_shared<Symbolic>(to_symbolic(to_postfix(to_infix(expr))));
 }
+
+Expr::Expr() { this->expr = std::make_shared<Symbolic>(); }
 
 Expr::Expr(std::string expr) { set(expr); }
 
@@ -162,15 +163,6 @@ std::queue<std::string> Expr::to_infix(std::string str) {
 		if (it != str.end())
 			it++;
 	}
-
-	std::cout << "infix      : ";
-	for (int i = 0; i < infix.size(); i++) {
-		std::cout << infix.front() << " ";
-		infix.push(infix.front());
-		infix.pop();
-	}
-	std::cout << std::endl;
-
 	return infix;
 }
 
@@ -228,15 +220,6 @@ std::queue<std::string> Expr::to_postfix(std::queue<std::string> infix) {
 		postfix.push(ops.top());
 		ops.pop();
 	}
-
-	std::cout << "postfix    : ";
-	for (int i = 0; i < postfix.size(); i++) {
-		std::cout << postfix.front() << " ";
-		postfix.push(postfix.front());
-		postfix.pop();
-	}
-	std::cout << std::endl;
-	
 	return postfix;
 }
 
@@ -287,8 +270,6 @@ Symbolic Expr::to_symbolic(std::queue<std::string> postfix) {
 			ss.push(Symbolic(s));
 		}
 	}
-	std::cout << "simplified : " << ss.top() << std::endl;
-
 	return ss.top();
 }
 
@@ -335,8 +316,6 @@ double Expr::to_double(std::queue<std::string> postfix) {
 			else if (s.compare("ln") == 0)  ss.push(log(n));
 		}
 	}
-	std::cout << "simplified : " << ss.top() << std::endl;
-
 	return ss.top();
 }
 
