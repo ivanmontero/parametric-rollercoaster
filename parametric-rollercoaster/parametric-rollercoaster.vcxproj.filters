@@ -45,6 +45,9 @@
     <ClCompile Include="window.cpp">
       <Filter>Source Files\engine</Filter>
     </ClCompile>
+    <ClCompile Include="world.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="expr.h">
@@ -79,6 +82,9 @@
     </ClInclude>
     <ClInclude Include="constants.h">
       <Filter>Header Files\engine</Filter>
+    </ClInclude>
+    <ClInclude Include="world.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
