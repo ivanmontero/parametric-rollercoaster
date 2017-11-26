@@ -20,10 +20,9 @@ const char const Expr::NUMBERS[11] = { '0','1','2','3','4','5','6','7','8','9', 
 /******************************** OBJECT METHODS ********************************/
 
 std::shared_ptr<Symbolic> Expr::parse(std::string expr) {
+	std::cout << "Original   : " << expr << std::endl;
 	return std::make_shared<Symbolic>(to_symbolic(to_postfix(to_infix(expr))));
 }
-
-Expr::Expr() { this->expr = std::make_shared<Symbolic>(); }
 
 Expr::Expr(std::string expr) { set(expr); }
 
@@ -86,7 +85,7 @@ double Expr::eval(Symbolic expr) {
 
 std::string Expr::to_string(Symbolic expr) {
 	std::stringstream ss;
-	ss << expr;
+	ss << std::fixed << expr;
 	return ss.str();
 }
 
@@ -270,6 +269,7 @@ Symbolic Expr::to_symbolic(std::queue<std::string> postfix) {
 			ss.push(Symbolic(s));
 		}
 	}
+
 	return ss.top();
 }
 
@@ -316,6 +316,7 @@ double Expr::to_double(std::queue<std::string> postfix) {
 			else if (s.compare("ln") == 0)  ss.push(log(n));
 		}
 	}
+
 	return ss.top();
 }
 
