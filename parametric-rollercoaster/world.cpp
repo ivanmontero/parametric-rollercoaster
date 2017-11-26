@@ -103,9 +103,10 @@ void World::Update(float delta) {
 
 		std::vector<Vertex> cvs;
 		std::vector<GLuint> cis;
-		int index = 0;
+		/*int index = 0;*/
 		// Push off into a different thread
-		for (float t = tmin; t <= tmax; t += tstep) {
+		for (float i = 0; i <= (tmax - tmin) / tstep; i++) {
+			float t = tmin + i * tstep;
 			// Vertex Calculations
 			CVertex cv;
 			cv.t = t;
@@ -117,13 +118,13 @@ void World::Update(float delta) {
 			glm::vec3 acc(rpp[0].eval_at("t", t), rpp[1].eval_at("t", t), rpp[2].eval_at("t", t));
 			cv.binormal = glm::normalize(glm::cross(vel, acc));
 			// N = B x T
-			cv.normal = glm::cross(cv.binormal, cv.tangent);
+			if(!isnan(cv.tangent.x))
+				cv.normal = glm::cross(cv.binormal, cv.tangent);
 			cVertices.push_back(cv);
 			// Index Calculations
-			if (t != tmin && t != tmax)
-				cis.push_back(index);
-			cis.push_back(index);
-			index++;
+			if (i != 0 && i != (tmax - tmin) / tstep)
+				cis.push_back(i);
+			cis.push_back(i);
 		}
 		curve = new Mesh(cvs, cis);
 
