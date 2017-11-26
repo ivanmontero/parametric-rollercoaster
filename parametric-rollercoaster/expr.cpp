@@ -20,9 +20,10 @@ const char const Expr::NUMBERS[11] = { '0','1','2','3','4','5','6','7','8','9', 
 /******************************** OBJECT METHODS ********************************/
 
 std::shared_ptr<Symbolic> Expr::parse(std::string expr) {
-	std::cout << "Original   : " << expr << std::endl;
 	return std::make_shared<Symbolic>(to_symbolic(to_postfix(to_infix(expr))));
 }
+
+Expr::Expr() { this->expr = std::make_shared<Symbolic>(); }
 
 Expr::Expr(std::string expr) { set(expr); }
 

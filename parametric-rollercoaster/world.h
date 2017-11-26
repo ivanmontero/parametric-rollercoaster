@@ -20,6 +20,17 @@ struct CVertex {
 };
 
 class World : public Scene {
+	// Boilerplate
+public:
+	void Initialize();
+	void Update(float delta);
+	void Render();
+	void Release();
+	static World* GetInstance();
+private:
+	static World instance;
+	World();
+	World(World&);
 private:
 	// Axes
 	GLuint aShader;
@@ -38,22 +49,8 @@ private:
 	std::array<Expr, 3> rpp;
 	// Params
 	double tmin, tmax, tstep;
-
 public:
 	glm::vec3 to_opengl(glm::vec3 mathCoords);
+	glm::vec3 lerp(glm::vec3 a, glm::vec3 b, float t);
 
-
-
-
-	// Boilerplate
-public:
-	void Initialize();
-	void Update(float delta);
-	void Render();
-	void Release();
-	static World* GetInstance();
-private:
-	static World instance;
-	World();
-	World(World&);
 };

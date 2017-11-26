@@ -8,17 +8,23 @@
 #include "keyboard.h"
 #include "mesh.h"
 
+World::World() {}
 
+World::World(World&) {}
 
-glm::vec3 World::to_opengl(glm::vec3 mathCoords) {
-	return glm::vec3(mathCoords.y, mathCoords.z, mathCoords.x);
-}
+World World::instance = World();
 
+World* World::GetInstance() { return &instance; }
+
+// ALL RENDERING ON MAIN THREAD
+// - MESH
+// CREATE VERTICES IN NEW METHOD
 // USE CONSOLE TO EXIT
 void World::Initialize() {
 	aShader = Renderer::CreateShader("axes.vert", "axes.frag");
 	cShader = Renderer::CreateShader("curve.vert", "curve.frag");
 
+	glScalef(2.0f, 2.0f, 2.0f);
 	Window::GrabCursor(true);
 	Window::SetVSync(true);
 	Camera::SetPosition(1.0f, 1.0f, 1.0f);
@@ -59,14 +65,14 @@ void World::Initialize() {
 			rp = { r[0].df("t"), r[1].df("t"), r[2].df("t") };
 			rpp = { rp[0].df("t"), rp[1].df("t"), rp[2].df("t") };
 
-			std::cout << "r(t)=<" << r[0].to_string() << ", " << r[1].to_string() << ", " << r[2].to_string() << ">\n";
-			std::cout << "r'(t)=<" << rp[0].to_string() << ", " << rp[1].to_string() << ", " << rp[2].to_string() << ">\n";
-			std::cout << "r''(t)=<" << rpp[0].to_string() << ", " << rpp[1].to_string() << ", " << rpp[2].to_string() << ">\n";
+			//std::cout << "r(t)=<" << r[0].to_string() << ", " << r[1].to_string() << ", " << r[2].to_string() << ">\n";
+			//std::cout << "r'(t)=<" << rp[0].to_string() << ", " << rp[1].to_string() << ", " << rp[2].to_string() << ">\n";
+			//std::cout << "r''(t)=<" << rpp[0].to_string() << ", " << rpp[1].to_string() << ", " << rpp[2].to_string() << ">\n";
 
 		}
 	});
 	// Create axes
-	float axis_length = 50.0f;
+	float axis_length = 10.0f;
 	float ava[] = {
 		0, 0, 0,
 		axis_length, 0, 0,
@@ -92,12 +98,13 @@ void World::Update(float delta) {
 
 	if (new_func) {
 		// Generate new graph
-		std::cout << "Generating graph! " << std::endl;
+		//std::cout << "Generating graph! " << std::endl;
 		// ...
 
 		std::vector<Vertex> cvs;
 		std::vector<GLuint> cis;
 		int index = 0;
+		// Push off into a different thread
 		for (float t = tmin; t <= tmax; t += tstep) {
 			// Vertex Calculations
 			CVertex cv;
@@ -179,18 +186,11 @@ void World::Release() {
 	}
 }
 
-World::World() {}
+glm::vec3 World::to_opengl(glm::vec3 mathCoords) {
+	return glm::vec3(mathCoords.y, mathCoords.z, mathCoords.x);
+}
 
-World::World(World&) {}
-
-World World::instance = World();
-
-//World& World::operator = (const World& other) {
-//	std::lock(func_mutex, other.func_mutex);
-//	std::lock_guard<std::mutex> self_lock(, std::adopt_lock);
-//	std::lock_guard<std::mutex> other_lock(other.mtx, std::adopt_lock);
-//	value = other.value;
-//	return *this;
-//}
-
-World* World::GetInstance() { return &instance; }
+//A*t + (1 - t)*B
+glm::vec3 World::lerp(glm::vec3 a, glm::vec3 b, float t) {
+	return a * t + (1 - t)*b;
+}
