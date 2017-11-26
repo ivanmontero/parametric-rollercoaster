@@ -88,16 +88,16 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="parametric.vert">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="parametric.frag">
-      <Filter>Resource Files</Filter>
-    </None>
     <None Include="axes.frag">
       <Filter>Resource Files</Filter>
     </None>
     <None Include="axes.vert">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="curve.frag">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="curve.vert">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>

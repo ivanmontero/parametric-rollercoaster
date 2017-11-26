@@ -53,7 +53,7 @@ void World::Initialize() {
 			tmin = params[0];
 			tstep = params[2];
 			// Makes sure that the step is reasonable.
-			tmax = floor((tmax - tmin) / tstep) * tstep;
+			tmax = floor((params[1] - tmin) / tstep) * tstep;
 
 			r = new_r;
 			rp = { r[0].df("t"), r[1].df("t"), r[2].df("t") };
@@ -78,11 +78,11 @@ void World::Initialize() {
 		0, 2,
 		0, 3
 	};
-	std::vector<Vertex> av;
+	std::vector<Vertex> avs;
 	for (int i = 0; i < 4; i++) 
-		av.push_back(Vertex(glm::vec3(ava[i * 3], ava[i * 3 + 1], ava[i * 3 + 2])));
-	std::vector<GLuint> ai(std::begin(aia), std::end(aia));
-	axes = new Mesh(av, ai);
+		avs.push_back(Vertex(glm::vec3(ava[i * 3], ava[i * 3 + 1], ava[i * 3 + 2])));
+	std::vector<GLuint> ais(std::begin(aia), std::end(aia));
+	axes = new Mesh(avs, ais);
 
 
 }
@@ -92,16 +92,33 @@ void World::Update(float delta) {
 
 	if (new_func) {
 		// Generate new graph
-		//std::cout << "entered! " << std::endl;
+		std::cout << "Generating graph! " << std::endl;
 		// ...
 
-		std::vector<Vertex> pv;
+		std::vector<Vertex> cvs;
+		std::vector<GLuint> cis;
+		int index = 0;
 		for (float t = tmin; t <= tmax; t += tstep) {
-
+			// Vertex Calculations
+			CVertex cv;
+			cv.t = t;
+			glm::vec3 pos(r[0].eval_at("t", t), r[1].eval_at("t", t), r[2].eval_at("t", t));
+			cvs.push_back(Vertex(to_opengl(pos)));
+			cv.position = pos;
+			glm::vec3 vel(rp[0].eval_at("t", t), rp[1].eval_at("t", t), rp[2].eval_at("t", t));
+			cv.tangent = glm::normalize(vel);
+			glm::vec3 acc(rpp[0].eval_at("t", t), rpp[1].eval_at("t", t), rpp[2].eval_at("t", t));
+			cv.binormal = glm::normalize(glm::cross(vel, acc));
+			// N = B x T
+			cv.normal = glm::cross(cv.binormal, cv.tangent);
+			cVertices.push_back(cv);
+			// Index Calculations
+			if (t != tmin && t != tmax)
+				cis.push_back(index);
+			cis.push_back(index);
+			index++;
 		}
-
-
-
+		curve = new Mesh(cvs, cis);
 
 		new_func = false;
 		if (!init)
@@ -147,8 +164,8 @@ void World::Render() {
 	
 	// Graph
 	if (init) {
-		Renderer::SetShader(pShader);
-		
+		Renderer::SetShader(cShader);
+		Renderer::Render(curve, GL_LINES);
 	}
 
 }

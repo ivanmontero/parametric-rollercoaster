@@ -144,8 +144,8 @@
   <ItemGroup>
     <None Include="axes.frag" />
     <None Include="axes.vert" />
-    <None Include="parametric.frag" />
-    <None Include="parametric.vert" />
+    <None Include="curve.frag" />
+    <None Include="curve.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
