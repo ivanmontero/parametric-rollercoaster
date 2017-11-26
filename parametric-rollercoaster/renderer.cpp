@@ -160,67 +160,6 @@ void Renderer::SetWireframe(bool wire) {
 	wire ? glPolygonMode(GL_FRONT_AND_BACK, GL_LINE) : glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 }
 
-Mesh* Renderer::CreateCube() {
-	Vertex v[] = {
-		Vertex(POSITION(-0.5f, -0.5f, -0.5f), NORMAL( 0.0f,  0.0f, -1.0f)),
-		Vertex(POSITION(0.5f, -0.5f, -0.5f),  NORMAL(0.0f,  0.0f, -1.0f)),
-		Vertex(POSITION(0.5f,  0.5f, -0.5f),  NORMAL(0.0f,  0.0f, -1.0f)),
-		Vertex(POSITION(0.5f,  0.5f, -0.5f),  NORMAL(0.0f,  0.0f, -1.0f)),
-		Vertex(POSITION(-0.5f,  0.5f, -0.5f), NORMAL( 0.0f,  0.0f, -1.0f)),
-		Vertex(POSITION(-0.5f, -0.5f, -0.5f), NORMAL( 0.0f,  0.0f, -1.0f)),
-		Vertex(POSITION(-0.5f, -0.5f,  0.5f), NORMAL( 0.0f,  0.0f,  1.0f)),
-		Vertex(POSITION(0.5f, -0.5f,  0.5f),  NORMAL(0.0f,  0.0f,  1.0f)),
-		Vertex(POSITION(0.5f,  0.5f,  0.5f),  NORMAL(0.0f,  0.0f,  1.0f)),
-		Vertex(POSITION(0.5f,  0.5f,  0.5f),  NORMAL(0.0f,  0.0f,  1.0f)),
-		Vertex(POSITION(-0.5f,  0.5f,  0.5f), NORMAL( 0.0f,  0.0f,  1.0f)),
-		Vertex(POSITION(-0.5f, -0.5f,  0.5f), NORMAL( 0.0f,  0.0f,  1.0f)),
-		Vertex(POSITION(-0.5f,  0.5f,  0.5f), NORMAL(-1.0f,  0.0f,  0.0f)),
-		Vertex(POSITION(-0.5f,  0.5f, -0.5f), NORMAL(-1.0f,  0.0f,  0.0f)),
-		Vertex(POSITION(-0.5f, -0.5f, -0.5f), NORMAL(-1.0f,  0.0f,  0.0f)),
-		Vertex(POSITION(-0.5f, -0.5f, -0.5f), NORMAL(-1.0f,  0.0f,  0.0f)),
-		Vertex(POSITION(-0.5f, -0.5f,  0.5f), NORMAL(-1.0f,  0.0f,  0.0f)),
-		Vertex(POSITION(-0.5f,  0.5f,  0.5f), NORMAL(-1.0f,  0.0f,  0.0f)),
-		Vertex(POSITION(0.5f,  0.5f,  0.5f),  NORMAL(1.0f,  0.0f,  0.0f)),
-		Vertex(POSITION(0.5f,  0.5f, -0.5f),  NORMAL(1.0f,  0.0f,  0.0f)),
-		Vertex(POSITION(0.5f, -0.5f, -0.5f),  NORMAL(1.0f,  0.0f,  0.0f)),
-		Vertex(POSITION(0.5f, -0.5f, -0.5f),  NORMAL(1.0f,  0.0f,  0.0f)),
-		Vertex(POSITION(0.5f, -0.5f,  0.5f),  NORMAL(1.0f,  0.0f,  0.0f)),
-		Vertex(POSITION(0.5f,  0.5f,  0.5f),  NORMAL(1.0f,  0.0f,  0.0f)),
-		Vertex(POSITION(-0.5f, -0.5f, -0.5f), NORMAL( 0.0f, -1.0f,  0.0f)),
-		Vertex(POSITION(0.5f, -0.5f, -0.5f),  NORMAL(0.0f, -1.0f,  0.0f)),
-		Vertex(POSITION(0.5f, -0.5f,  0.5f),  NORMAL(0.0f, -1.0f,  0.0f)),
-		Vertex(POSITION(0.5f, -0.5f,  0.5f),  NORMAL(0.0f, -1.0f,  0.0f)),
-		Vertex(POSITION(-0.5f, -0.5f,  0.5f), NORMAL( 0.0f, -1.0f,  0.0f)),
-		Vertex(POSITION(-0.5f, -0.5f, -0.5f), NORMAL( 0.0f, -1.0f,  0.0f)),
-		Vertex(POSITION(-0.5f,  0.5f, -0.5f), NORMAL( 0.0f,  1.0f,  0.0f)),
-		Vertex(POSITION(0.5f,  0.5f, -0.5f),  NORMAL(0.0f,  1.0f,  0.0f)),
-		Vertex(POSITION(0.5f,  0.5f,  0.5f),  NORMAL(0.0f,  1.0f,  0.0f)),
-		Vertex(POSITION(0.5f,  0.5f,  0.5f),  NORMAL(0.0f,  1.0f,  0.0f)),
-		Vertex(POSITION(-0.5f,  0.5f,  0.5f), NORMAL( 0.0f,  1.0f,  0.0f)),
-		Vertex(POSITION(-0.5f,  0.5f, -0.5f), NORMAL( 0.0f,  1.0f,  0.0f))
-	};
-
-	GLuint i[36] = {
-		0,1,2,
-		3,4,5,
-		6,7,8,
-		9,10,11,
-		12,13,14,
-		15,16,17,
-		18,19,20,
-		21,22,23,
-		24,25,26,
-		27,28,29,
-		30,31,32,
-		33,34,35
-	};
-
-	return new Mesh(
-		std::vector<Vertex>(std::begin(v), std::end(v)), 
-		std::vector<GLuint>(std::begin(i), std::end(i))
-	);
-}
-
 void Renderer::CompileShader(GLuint id, const char* filepath) {
 	std::string code;
 	std::ifstream file(filepath, std::ios::in);

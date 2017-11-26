@@ -11,7 +11,7 @@
 class World : public Scene {
 private:
 	// Rendering
-	GLuint shader;
+	GLuint pShader, aShader;
 
 	// Math
 	volatile bool new_func = false;
@@ -21,6 +21,8 @@ private:
 	std::array<Expr, 3> r;
 	std::array<Expr, 3> rp;
 	std::array<Expr, 3> rpp;
+	// Params
+	double min, max, step;
 public:
 	void Initialize();
 	void Update(float delta);
@@ -30,7 +32,7 @@ public:
 	static World* GetInstance();
 private:
 	static World instance;
+	//World& operator = (const World& other);
 	World();
 	World(World&);
-	
 };

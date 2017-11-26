@@ -8,33 +8,51 @@
 #include "keyboard.h"
 
 
+
 // USE CONSOLE TO EXIT
 void World::Initialize() {
-	shader = Renderer::CreateShader("parametric.vert", "parametric.frag");
+	aShader = Renderer::CreateShader("axes.vert", "axes.frag");
+	pShader = Renderer::CreateShader("parametric.vert", "parametric.frag");
 
-	// To allow consle input
+	// To allow console input
 	t_func_input = std::thread([this]() {
-		std::array<std::string, 3> funcs = { "x(t)=", "y(t)=", "z(t)=" };
+		std::array<std::string, 6> prompts = { "x(t)=", "y(t)=", "z(t)=", "min t=", "max t=",  "step="};
 		while (!Window::ShouldClose()) {
 			std::array<Expr, 3> new_r;
-			for (int i = 0; i < funcs.size(); i++) {
-				std::cout << funcs[i];
-				std::string input;
-				std::getline(std::cin, input); 
+			std::array<double, 3> params;
+			for (int i = 0; i < prompts.size(); i++) {
+				std::cout << prompts[i];
+				std::string in;
+				std::getline(std::cin, in); 
 				if (Window::ShouldClose()) break;
-				new_r[i] = Expr(input);
+				if (i < 3)
+					new_r[i] = Expr(in);
+				else
+					params[i - 3] = Expr::eval(in);
 			}
 			if (Window::ShouldClose()) break;
+
 			new_func = true;
 			std::lock_guard<std::mutex> lock(func_mutex);
+
+			min = params[0];
+			step = params[2];
+			// Makes sure that the step is reasonable.
+			max = floor((max - min) / step) * step;
+
 			r = new_r;
 			rp = { r[0].df("t"), r[1].df("t"), r[2].df("t") };
 			rpp = { rp[0].df("t"), rp[1].df("t"), rp[2].df("t") };
-			std::cout << r[0].to_string() << " " << r[1].to_string() << " " << r[2].to_string() << std::endl;
-			std::cout << rp[0].to_string() << " " << rp[1].to_string() << " " << rp[2].to_string() << std::endl;
-			std::cout << rpp[0].to_string() << " " << rpp[1].to_string() << " " << rpp[2].to_string() << std::endl;
+
+			std::cout << "r(t)=<" << r[0].to_string() << ", " << r[1].to_string() << ", " << r[2].to_string() << ">\n";
+			std::cout << "r'(t)=<" << rp[0].to_string() << ", " << rp[1].to_string() << ", " << rp[2].to_string() << ">\n";
+			std::cout << "r''(t)=<" << rpp[0].to_string() << ", " << rpp[1].to_string() << ", " << rpp[2].to_string() << ">\n";
+
 		}
 	});
+
+
+
 }
 
 void World::Update(float delta) {
@@ -62,7 +80,8 @@ void World::Update(float delta) {
 
 void World::Render() {
 	Renderer::Clear();
-	Renderer::SetShader(shader);
+	Renderer::SetShader(pShader);
+
 }
 
 void World::Release() {
@@ -77,6 +96,16 @@ void World::Release() {
 
 World::World() {}
 
+World::World(World&) {}
+
 World World::instance = World();
+
+//World& World::operator = (const World& other) {
+//	std::lock(func_mutex, other.func_mutex);
+//	std::lock_guard<std::mutex> self_lock(, std::adopt_lock);
+//	std::lock_guard<std::mutex> other_lock(other.mtx, std::adopt_lock);
+//	value = other.value;
+//	return *this;
+//}
 
 World* World::GetInstance() { return &instance; }

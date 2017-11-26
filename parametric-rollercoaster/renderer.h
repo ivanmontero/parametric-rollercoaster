@@ -49,12 +49,8 @@ public:
 
 	static GLuint CreateShader(const char*, const char*);
 	static GLuint CreateShader(const char*, const char*, const char*);
-	static GLuint CreateTexture(const char*);	// TODO: Resource manager
-	static GLuint CreateTexture(int, int);
 
 	static void SetWireframe(bool wire);
-
-	static Mesh* CreateCube();
 
 private:
 	static void CompileShader(GLuint, const char*);

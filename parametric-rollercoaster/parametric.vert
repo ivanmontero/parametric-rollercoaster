@@ -1,5 +1,9 @@
 #version 330 core
 
-void main() {
+// layout(location = 0) in vec3 position;
 
+// flat out vec3 vcolor; // last index convention
+
+void main() {
+    
 }

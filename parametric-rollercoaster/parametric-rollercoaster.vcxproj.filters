@@ -94,5 +94,11 @@
     <None Include="parametric.frag">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="axes.frag">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="axes.vert">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

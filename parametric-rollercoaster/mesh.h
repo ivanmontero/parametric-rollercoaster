@@ -6,15 +6,13 @@
 #include <GL/glew.h> // Contains all the necessery OpenGL includes
 #include <glm/glm.hpp>
 
+// Modified to work with only positions
+
 #define POSITION glm::vec3
-#define NORMAL glm::vec3
 
 struct Vertex {
 	POSITION Position;
-	NORMAL Normal;
-
 	Vertex(POSITION pos) : Position(pos) {}
-	Vertex(POSITION pos, NORMAL norm) : Position(pos), Normal(norm) {}
 };
 
 class Mesh {

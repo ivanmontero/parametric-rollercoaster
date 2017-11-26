@@ -142,6 +142,8 @@
     <ClInclude Include="world.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="axes.frag" />
+    <None Include="axes.vert" />
     <None Include="parametric.frag" />
     <None Include="parametric.vert" />
   </ItemGroup>
