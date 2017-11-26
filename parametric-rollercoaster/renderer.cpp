@@ -70,6 +70,14 @@ void Renderer::Render(Mesh* mesh) {
 	glBindVertexArray(0);
 }
 
+void Renderer::Render(Mesh* mesh, GLenum primitive) {
+	SetUniform("projection", projection);
+	SetUniform("view", Camera::GetViewMatrix());
+	glBindVertexArray(mesh->VAO);
+	glDrawElements(primitive, mesh->indices.size(), GL_UNSIGNED_INT, nullptr);
+	glBindVertexArray(0);
+}
+
 
 void Renderer::SetShader(GLuint shader) {
 	currentShader = shader;

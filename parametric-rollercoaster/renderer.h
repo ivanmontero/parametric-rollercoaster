@@ -30,6 +30,7 @@ public:
 
 	static void Render(int indices);
 	static void Render(Mesh* mesh);
+	static void Render(Mesh* mesh, GLenum primitive);
 
 	static void SetShader(GLuint shader);
 	static void SetVAO(GLuint vao);
